@@ -1,0 +1,1 @@
+Computer granma(Gemini)
