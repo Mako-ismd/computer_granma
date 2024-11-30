@@ -55,6 +55,10 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	u := m.Author
 	ctx := context.Background()
 
+	if len(m.Mentions) < 1 {
+		return
+	}
+
 	if u.ID != clientId && m.Mentions[0].ID == clientId {
 		resp := genMessage(m.Content, ctx)
 		_, err := s.ChannelMessageSend(m.ChannelID, resp)
@@ -72,7 +76,7 @@ func genMessage(query string, ctx context.Context) string {
 
 	defer client.Close()
 
-	model := client.GenerativeModel("gemini-pro")
+	model := client.GenerativeModel("gemini-1.5-flash")
 	model.SystemInstruction = genai.NewUserContent(genai.Text("You are a granma."))
 	prompt := genai.Text(query)
 
